@@ -185,4 +185,6 @@ for [_, v] in videos_mod:
 
 print("migration end")
 
-# %%
+# %% clean up
+# python3.8 thread pool has bug
+os._exit(0)
