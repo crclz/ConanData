@@ -22,10 +22,10 @@ video_api = conan.VideosApi(api_client=client)
 login_model = conan.LoginModel(
     username='admin', password=os.environ['CONAN_ADMIN_PASS'])
 
-token = access_api.api_access_login_post(body=login_model)
+token = access_api.login(body=login_model)
 client.default_headers['Conan-LoginInfo'] = token
 
-me = access_api.api_access_me_get()
+me = access_api.get_me()
 me: conan.QUser
 assert me.id is not None
 
@@ -104,7 +104,7 @@ def dto_convert(v: conan.Video):
 
 
 # fetch video list
-old_videos = video_api.api_videos_get()
+old_videos = video_api.get_videos()
 old_videos = [dto_convert(p) for p in old_videos]
 
 # compare video list
@@ -176,7 +176,7 @@ for v in videos_add:
         title=v.title, is_tv=v.is_tv, seq_id=v.seq_id,
         publish=v.pub, bili_play_id=v.bili_play_id)
 
-    res: conan.IdDto = video_api.api_videos_id_put(v.id, body=model)
+    res: conan.IdDto = video_api.put_video(v.id, body=model)
     assert res.id is not None
     print(res.id)
 
