@@ -183,4 +183,6 @@ for [_, v] in videos_mod:
     assert res.id is not None
     print(res.id)
 
+print("migration end")
+
 # %%
