@@ -76,14 +76,17 @@ lines = list(reader)
 lines = lines[1:]
 
 for line in lines:
-    seq_id, title, pub = line
+    seq_id, title, pub, playId = line
     seq_id = int(seq_id)
     pub = datetime.strptime(pub, '%Y年%m月%d日')
     pub = datetime_to_unix_sec(pub)
 
     id = f"m{seq_id}"
 
-    v = Video(id, False, title, seq_id, pub, None)
+    if len(playId) == 0:
+        playId = None
+
+    v = Video(id, False, title, seq_id, pub, playId)
     videos_2.append(v)
 
 
@@ -163,6 +166,9 @@ with open('migration-report.txt', 'w', encoding='utf8') as f:
 # %% do requests after checking the migration report
 
 assert len(videos_rm) == 0  # removing causes cascade business operations
+
+if input("Please type 'confirm' to confirm") != "confirm":
+    raise Exception("Please confirm")
 
 # +
 for v in videos_add:
