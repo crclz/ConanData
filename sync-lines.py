@@ -67,9 +67,47 @@ line_eps = ["tv" + str(p) for p in line_eps]
 # request
 storyline_id = "1-deduction"
 model = conan.PutStorylineModel(
-    name="推理线", description="aka主线、酒厂线", videos=line_eps)
+    name="推理线", description="主线、酒厂线", videos=line_eps)
 
 res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
 print("put 推理线", res.id)
+
+# %% 新兰
+with open('storylines/新兰.txt', 'r', encoding='utf8') as f:
+    lines = f.read().splitlines(keepends=False)
+
+# get all videos from server. SSOT: Single Source of Truth
+
+videos: List[conan.Video] = video_api.get_videos()
+
+movies = [p for p in videos if not p.is_tv]
+
+video_ids = []
+
+for line in lines:
+    try:
+        tv_seqs = parse_line(line)
+        for x in tv_seqs:
+            video_ids.append("tv" + str(x))
+    except(Exception):
+        # movie
+        v = None
+        for mov in movies:
+            if mov.title.endswith(line):
+                v = mov
+        assert v is not None
+        video_ids.append(v.id)
+
+# do requests
+storyline_id = '2-love'
+model = conan.PutStorylineModel(
+    name='新兰线',
+    description='新一和兰的感情线',
+    videos=video_ids
+)
+
+res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
+print("put 新兰线", res.id)
+
 
 # %%
