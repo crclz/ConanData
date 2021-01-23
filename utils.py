@@ -10,6 +10,7 @@ class Api:
         self.access_api = conan.AccessApi(api_client=self.client)
         self.video_api = conan.VideosApi(api_client=self.client)
         self.storyline_api = conan.StoryLinesApi(api_client=self.client)
+        self.users_api = conan.UsersApi(self.client)
 
     def login(self, username, password):
         login_model = conan.LoginModel(username=username, password=password)
