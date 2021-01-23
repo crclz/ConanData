@@ -110,4 +110,25 @@ res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
 print("put 新兰线", res.id)
 
 
+# %% 血型的推进
+with open('storylines/血型.txt', 'r', encoding='utf8') as f:
+    lines = f.read().splitlines(keepends=False)
+
+line_eps = []
+for line in lines:
+    line_eps += parse_line(line)
+
+line_eps = ["tv" + str(p) for p in line_eps]
+
+# request
+storyline_id = "3-bloodtype"
+model = conan.PutStorylineModel(
+    name="血型",
+    description="《危命的复活》系列剧情，小兰的怀疑稳步推进（请按故事序排序）",
+    videos=line_eps)
+
+res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
+print("put 危命的复活铺垫", res.id)
+
+
 # %%
