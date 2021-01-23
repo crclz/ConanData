@@ -48,7 +48,8 @@ view_set = set(viewed_ids)
 diff_eps = list(recom_set - view_set)
 diff_eps.sort()
 
-for ep in diff_eps:
-    print(recommend[ep])
+with open('tmp_recommend_diff.txt', 'w', encoding='utf8') as f:
+    for ep in diff_eps:
+        f.write(recommend[ep]+"\n")
 
 # %%
