@@ -185,7 +185,7 @@ for [_, v] in videos_mod:
     model = conan.PutVideoModel(
         title=v.title, is_tv=v.is_tv, seq_id=v.seq_id,
         publish=v.pub, bili_play_id=v.bili_play_id)
-    res: conan.IdDto = video_api.api_videos_id_put(v.id, body=model)
+    res: conan.IdDto = video_api.put_video(v.id, body=model)
     assert res.id is not None
     print(res.id)
 
