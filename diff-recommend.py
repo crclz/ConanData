@@ -10,7 +10,7 @@ with open('recommend/zhihu-1.txt', 'r', encoding='utf8') as f:
 
 import re
 
-recommend_eps = []
+recommend = {}
 
 for line in lines:
     if len(line) == 0:
@@ -18,9 +18,9 @@ for line in lines:
 
     m = re.findall(r'^(\d+)', line)
     epid = int(m[0])
-    recommend_eps.append(epid)
+    recommend[epid] = line
 
-for x in recommend_eps:
+for x in recommend.keys():
     print(x)
 
 # %% login
@@ -42,12 +42,13 @@ viewed_ids = [int(p.video_id[2:])
 
 # %% diff
 
-recom_set = set(recommend_eps)
+recom_set = set(recommend.keys())
 view_set = set(viewed_ids)
 
 diff_eps = list(recom_set - view_set)
 diff_eps.sort()
 
-print(diff_eps)
+for ep in diff_eps:
+    print(recommend[ep])
 
 # %%
