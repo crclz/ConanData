@@ -131,4 +131,65 @@ res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
 print("put 危命的复活", res.id)
 
 
+# %% bilibili 推荐 up主：@大概更喜欢纸片人
+with open('storylines/bilibili-recommend-1.txt', 'r', encoding='utf8') as f:
+    content = f.read()
+
+charlist = set(list(content))
+for c in list(charlist):
+    if re.match(r'[\u4e00-\u9fff]|\s|\d', c) is not None:
+        charlist.remove(c)
+
+print(charlist)
+
+
+def single(s_list: List):
+    assert len(s_list) == 1
+    return s_list[0]
+
+
+items = re.findall(r'(\d+~\d+)|(\d+)', content)
+items = [single([o for o in p if o !='']) for p in items]
+
+# print(items)
+
+def parse2(line: str):
+    eps = []
+
+    # 059~060
+    m = re.findall(r'(\d+)~(\d+)', line)
+    if len(m) > 0:
+        x1 = int(m[0][0])
+        x2 = int(m[0][1])
+        assert x1 < x2
+        for i in range(x1, x2+1):
+            eps.append(i)
+    else:
+        # 123
+        m = re.findall(r'(\d+)', line)
+        assert len(m) == 1
+        x = int(m[0])
+        eps.append(x)
+
+    return eps
+
+line_eps = []
+for line in items:
+    line_eps += parse2(line)
+
+line_eps = ["tv" + str(p) for p in line_eps]
+
+# print(line_eps)
+
+# request
+storyline_id = "4-bili-rec1"
+model = conan.PutStorylineModel(
+    name="推荐1",
+    description="b站up主 @大概更喜欢纸片人 的推荐，截至1034。cv7208676，BV18K4y1a7eo",
+    videos=line_eps)
+
+res: conan.IdDto = storyline_api.put_storyline(storyline_id, body=model)
+print("put @大概更喜欢纸片人 的推荐", res.id)
+
+
 # %%
