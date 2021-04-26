@@ -10,7 +10,7 @@ import swagger_client as conan
 
 # %% api client init
 conf = conan.Configuration()
-conf.host = "http://localhost:3923"
+conf.host = "http://light:27019"
 
 client = conan.ApiClient(configuration=conf)
 
@@ -95,7 +95,7 @@ for v in videos_2[:2]:
 
 print("movie", len(videos_2))
 
-# %% generate diff report
+# %% generate migration report
 
 
 def dto_convert(v: conan.Video):
@@ -137,7 +137,7 @@ videos_mod = [[v1, v2]
 
 unchange_count = len(k_prob_mod) - len(videos_mod)
 
-# generate report
+# generate report file
 with open('migration-report.txt', 'w', encoding='utf8') as f:
 
     # +
